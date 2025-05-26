@@ -1,0 +1,74 @@
+# Configuration values for the postgresdb service
+
+projectNameOverride: postgres 
+
+# Common labels for deployment
+commonLabels:
+  app: postgres
+  tier: database
+
+# Selector labels for the deployment
+selectorLabels:
+  app: postgresdb
+
+# Replica count for the deployment
+replicaCount: 1
+
+# Strategy for the deployment
+strategy:
+  type: Recreate
+
+# Image configuration for the postgres service
+image:
+  name: postgresdb
+  repository: postgres
+  tag: latest
+  pullPolicy: Always
+  containerPort: 5432 
+
+# Resources for the postgres container
+resources: {}
+  # requests:
+  #   cpu: "100m"
+  #   memory: "512Mi"
+  # limits:
+  #   cpu: "200m"
+  #   memory: "800Mi"
+
+# Persistent volume claim configuration
+pvc:
+  mountPath: /var/lib/postgresql/data 
+  subPath: pgdata
+  storageClassName: standard
+  accessModes:
+    - ReadWriteOnce 
+  storage: 1Gi 
+
+# Service configuration for the postgres service
+service:
+  clusterIP: None
+  ports:
+    - port: 5432
+      targetPort: 5432
+
+# Network policy configuration for the postgres service
+networkPolicy:
+  policyTypes:
+    - Ingress
+  ingress:
+    - from:
+        - podSelector:
+            matchLabels:
+              app: authapi
+      ports:
+        - protocol: TCP
+          port: 5432 
+
+# Configmap values for the postgres service
+config:
+  POSTGRES_USER: "Prosperibe12"
+  POSTGRES_DB: "microservices_auth" 
+
+# Secret values for the postgres service
+secret:
+  POSTGRES_PASSWORD: "!4u2kn0w"

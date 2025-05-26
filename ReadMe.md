@@ -20,7 +20,7 @@ To install the PostgresDB service, follow these steps:
 Apply the Kubernetes manifests to deploy PostgresDB:
 Ensure you have a kubernetes cluster running
 ```bash
-kubectl apply -f manifests
+helm install [release name] [chart path]
 ```
 This will create the following resources:
 
